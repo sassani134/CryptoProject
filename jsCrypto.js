@@ -141,3 +141,5 @@ console.log("Blockchain valide? " + samCoin.isChainValid());
         this.chain.push(newBlock);
     }
 */
+
+// Fin video 3
