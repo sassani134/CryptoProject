@@ -74,6 +74,7 @@ class Blockchain{
                 }
             }
         }
+        return balance;
     }
     isChainValid(){
         for(let i = 1; i < this.chain.length; i++){
@@ -106,7 +107,7 @@ console.log('\n Balance of samuel is', samCoin.getBalanceOfAddress('samuel-addre
 console.log("Starting the miner ...");
 
 samCoin.minePendingTransactions('samuel-address');
-console.log('\n Balance of samuel is', samCoin.getBalanceOfAddress('samuel-address'));
+console.log('\n Balance of samuel is', samCoin.getBalanceOfAddress('address1'));
 
 
 /*test video 2 ne pas aller trop loin dans la difficulty
