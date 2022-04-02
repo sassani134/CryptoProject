@@ -1,4 +1,6 @@
-const SHA256 = require('crypto-js/sha256')
+const SHA256 = require('crypto-js/sha256');
+const EC = require('elliptic').ec;
+const ec = new EC('secp256k1');
 
 class Transactions{
     constructor(fromAdress, toAdress, amount){
@@ -6,8 +8,32 @@ class Transactions{
         this.toAdress = toAdress;
         this.amount = amount;
     }
+
+    calculateHash(){
+        return SHA256(this.fromAdress + this.toAdress + this.amount).toString();
+    }
+
+    signTransaction(signingKey){
+        if (signingKey.getPublic('hex') !== this.fromAdress){
+            throw new Error('You cannot sign transactions for other wallets !');
+        }
+
+        const hashTx = this.calculateHash();
+        const sig =  signingKey.sign(hashTx, 'base64');
+        this.signature = sig.toDER('hex');
+    }
+
+    isValid(){
+        if (this.fromAdress === null) return true;
+
+        if(!this.signature || this.signature.length === 0){
+            throw new Error('No signature in this transaction');
+        }
+        const publicKey = ec.keyFromPublic(this.fromAdress, 'hex');
+        return publicKey.verify(this.calculateHash(), this.signature);
+    }
 }
-class Block{
+class Block {
     constructor(timestamp, transactions, previousHash = ""){
         this.timestamp = timestamp;
         this.transactions = transactions;
@@ -26,6 +52,16 @@ class Block{
             this.hash = this.calculateHash();
         }
         console.log("Block mined: " + this.hash);
+    }
+
+    hasValidTransaction(){
+        for (const  tx of this.transactions) {
+            if (!tx.isValid()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
 
@@ -57,8 +93,17 @@ class Blockchain{
         ];
     }
 
-    createTransaction(transactions){
-        this.pendingTransactions.push(transactions)
+    addTransaction(transaction){
+
+        if (!transaction.fromAdress || !transaction.toAdress) {
+            throw new Error('Transaction must include from and to address');
+        }
+
+        if (!transaction.isValid()) {
+            throw new Error('Cannot add invalide transaction to chain');
+
+        }
+        this.pendingTransactions.push(transaction)
     }
 
     getBalanceOfAddress(address){
@@ -80,6 +125,9 @@ class Blockchain{
         for(let i = 1; i < this.chain.length; i++){
             const currentBlock = this.chain[i];
             const previousHash = this.chain[i - 1];
+            if (!currentBlock.hasValidTransaction()) {
+                return false
+            }
 
             if(currentBlock.hash !== currentBlock.calculateHash()){
                 return false;
@@ -93,53 +141,5 @@ class Blockchain{
     }
 }
 
-let samCoin = new Blockchain();
-
-samCoin.createTransaction(new Transactions('addresse1', 'address2', 100));
-samCoin.createTransaction(new Transactions('addresse2', 'address1', 50));
-
-console.log("Starting the miner ...");
-
-samCoin.minePendingTransactions('samuel-address');
-console.log('\n Balance of samuel is', samCoin.getBalanceOfAddress('samuel-address'));
-
-
-console.log("Starting the miner ...");
-
-samCoin.minePendingTransactions('samuel-address');
-console.log('\n Balance of samuel is', samCoin.getBalanceOfAddress('address1'));
-
-
-/*test video 2 ne pas aller trop loin dans la difficulty
-console.log('Mining block 1...');
-samCoin.addBlock(new Block(1," 10/03/2022", { amount: 4}));
-console.log('Mining block 2...');
-samCoin.addBlock(new Block(2," 11/03/2022", { amount: 4}));
-*/
-
-/*test video 1
-samCoin.addBlock(new Block(1," 10/03/2022", { amount: 4}));
-samCoin.addBlock(new Block(2," 11/03/2022", { amount: 4}));
-samCoin.addBlock(new Block(3," 12/03/2022", { amount: 5}));
-
-
-console.log("Blockchain valide? " + samCoin.isChainValid());
-//console.log(JSON.stringify(samCoin, null, 4));
-
-samCoin.chain[1].data = {amount: 777};
-console.log("Blockchain valide? " + samCoin.isChainValid());
-
-samCoin.chain[1].hash = samCoin.chain[1].calculateHash();
-console.log("Blockchain valide? " + samCoin.isChainValid());
-*/
-
-/* old mining method change from vid 3
-    addBlock(newBlock){
-        newBlock.previousHash = this.getLatestBlock().hash;
-        //newBlock.hash = newBlock.calculateHash();
-        newBlock.mineBlock(this.difficulty);
-        this.chain.push(newBlock);
-    }
-*/
-
-// Fin video 3
+module.exports.Blockchain = Blockchain;
+module.exports.Transactions = Transactions;
