@@ -6,12 +6,22 @@ const myKey = ec.keyFromPrivate('ebfedf86c597d6d6d511a3b061a8d387438ebc0fd31bdc1
 
 const myWalletAddress = myKey.getPublic('hex');
 
+
+console.log("1 - Creation Blockchaine ligne10");
 let samCoin = new Blockchain();
+console.log("Blockchain valide? " + samCoin.isChainValid());
 
+console.log("2 - mining pending Transaction ligne14");
+samCoin.minePendingTransactions(myWalletAddress);
+console.log("Blockchain valide? " + samCoin.isChainValid());
 
+console.log("3 - nouvelle transaction ligne18");
 const tx1 = new Transactions(myWalletAddress, 'public keys goes here', 10);
 tx1.signTransaction(myKey);
 samCoin.addTransaction(tx1);
+console.log("Blockchain valide? " + samCoin.isChainValid());
+
+
 
 //Video 3
 // samCoin.createTransaction(new Transactions('addresse1', 'address2', 100));
@@ -20,11 +30,22 @@ samCoin.addTransaction(tx1);
 console.log("Starting the miner ...");
 
 samCoin.minePendingTransactions(myWalletAddress);
+console.log("Blockchain valide? " + samCoin.isChainValid());
+
+
 console.log('\n Balance of samuel is', samCoin.getBalanceOfAddress(myWalletAddress));
 
 console.log("Blockchain valide? " + samCoin.isChainValid());
-samCoin.chain[1].transactions[0].amount = 1;
 console.log("Blockchain valide? " + samCoin.isChainValid());
+console.log("Starting the miner ...");
+
+samCoin.minePendingTransactions(myWalletAddress);
+console.log('\n Balance of samuel is', samCoin.getBalanceOfAddress(myWalletAddress));
+
+console.log("Blockchain valide? " + samCoin.isChainValid());
+console.log("Blockchain valide? " + samCoin.isChainValid());
+
+
 
 
 /*
