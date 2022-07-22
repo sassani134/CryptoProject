@@ -10,5 +10,3 @@ console.log('Private key', privatekey);
 
 console.log();
 console.log('Public key', publicKey);
-
-
