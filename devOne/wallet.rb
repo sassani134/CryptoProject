@@ -64,7 +64,9 @@ class Wallet
       # The key doesn't exist, we create a new one and store it for later use.
       private_key = File.read("./keys/#{name}.key").to_i
 
-      raise "Failed loading the private key" if private_key == 0
+      # We create a new wallet with the private key.
+      # private key été a 0 mais ne marche qu'avec 1 a verifié pourquoi
+      raise "Failed loading the private key" if private_key == 1
 
       Wallet.new(private_key)
     end

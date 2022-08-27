@@ -22,7 +22,7 @@ class Block
       @time.utc.to_s,
       @merkle_root,
       @nonce,
-    ].join("|")
+    ].join("|") #return @height | @previous_block_header_hash | @time | @merkle_root | @nonce
   end
 
   # Returns the hash of the block header which has the following composition:
@@ -34,7 +34,7 @@ class Block
   end
 
   # Finds the nonce matching the current difficulty level of the Blockchain.
-  # The parameters is used to provide a ime limit to the search for the nonce.
+  # The parameters is used to provide a time limit to the search for the nonce.
   def find_nonce(seconds)
     time_limit = Time.now + seconds
     @nonce = 0 if @nonce.nil?
