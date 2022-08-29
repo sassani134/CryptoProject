@@ -41,6 +41,8 @@ class TransactionBuilder
       "amount" => amount,
       "fee" => fee,
     }
+
+    puts @message
   end
 
   # Sets the message to be the mining reward which will include the sum of all
