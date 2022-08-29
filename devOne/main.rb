@@ -27,7 +27,7 @@ $logger = Logger.new(STDOUT)
 
 # No arguments to the command means we'll show the user the list of all commands.
 if ARGV.size == 0
-  $logger.info "Welcome to the melon factory 🍈\n\n"
+  $logger.info "Welcome to the devOne factory 🍈\n\n"
   $logger.info "Available commands:"
   $logger.info "\t node — Starts a node"
   $logger.info "\t mine — Starts a node that also performs mining"

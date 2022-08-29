@@ -9,7 +9,15 @@ class Blockchain
   DIFFICULTY_LEVEL = 5
 
   def initialize
-    @peers = ENV["MLN_PEERS"].to_s.split(",")
+    @peers = ENV["MLN_PEERS"]
+    puts "---------------------------------------"
+    puts "@peers: #{@peers}"
+    puts "---------------------------------------"
+
+    @peers= @peers.to_s.split(",")
+    puts "---------------------------------------"
+    puts @peers
+    puts "---------------------------------------"
   end
 
   def last_block
@@ -287,5 +295,7 @@ class Blockchain
 
     total.to_i - spent_including_fees.to_i
   end
+
+  puts "fin de fichier"
 end
 
