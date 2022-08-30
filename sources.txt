@@ -1,8 +1,0 @@
-#
-https://antoinefink.com/building-a-blockchain-and-cryptocurrency-in-ruby?utm_source=pocket_mylist
-https://www.youtube.com/watch?v=zVqczFZr124&list=PLzvRQMJ9HDiTqZmbtFisdXFxul5k0F-Q4
-https://www.youtube.com/watch?v=qF7dkrce-mQ
-
-#aide ruby
-https://www.codecademy.com/learn/learn-ruby/modules/learn-ruby-introduction-to-ruby-u/cheatsheet
-https://www.youtube.com/watch?v=UYm0kfnRTJk
