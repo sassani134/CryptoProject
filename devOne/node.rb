@@ -20,6 +20,11 @@ class Node < Sinatra::Base
     @@blockchain.last_block.to_json
   end
 
+  get "/blocks/all" do
+    content_type :json
+    @@blockchain.to_json
+  end
+
   get "/blocks/:height" do
     content_type :json
     @@blockchain.find_block_by_height(params["height"]).to_json
