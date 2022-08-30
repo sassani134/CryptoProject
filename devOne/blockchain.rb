@@ -296,6 +296,6 @@ class Blockchain
     total.to_i - spent_including_fees.to_i
   end
 
-  puts "fin de fichier"
+  puts "fin de fichier blockchain"
 end
 
